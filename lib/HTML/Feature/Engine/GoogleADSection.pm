@@ -4,6 +4,9 @@ use warnings;
 use HTML::TreeBuilder::LibXML;
 use base qw(HTML::Feature::Base);
 
+sub name {
+    return "GoogleADSection";
+}
 
 sub run {
     my $self     = shift;

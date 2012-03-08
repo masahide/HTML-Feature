@@ -11,6 +11,10 @@ use base qw(HTML::Feature::Base);
 
 __PACKAGE__->mk_accessors($_) for qw(_LDRFullFeed);
 
+sub name {
+    my $self = shift;
+    return "LDRFullFeed";
+}
 sub run {
     my $self     = shift;
     my $html_ref = shift;

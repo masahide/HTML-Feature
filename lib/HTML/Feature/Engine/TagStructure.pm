@@ -7,6 +7,10 @@ use HTML::Feature::Result;
 use base qw(HTML::Feature::Base);
 
 
+sub name {
+    return "TagStructure"
+}
+
 sub run {
     my $self     = shift;
     my $html_ref = shift;

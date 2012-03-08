@@ -25,7 +25,13 @@ sub run {
     eval {
         LABEL: for my $engine ( @{ $self->{engines} } )
         {
-            $result = $engine->run( $html_ref, $url, $result );
+            eval{
+                $result = $engine->run( $html_ref, $url, $result );
+            };
+            if ($@) {
+                carp("can't parse data [". $engine->name ."] url: ". $url);
+                last LABEL;
+            }
             if ( $result->{matched_engine} ) {
                 if ( defined $c->{enc_type} ) {
                     $result->title(
@@ -40,8 +46,11 @@ sub run {
         }
     };
     if ($@) {
-        carp("can not parse data");
+        carp("can not parse data (all engines) url:". $url);
         return HTML::Feature::Result->new;
+    }
+    if (!defined $result->{matched_engine} ) {
+        warn("can't extract: " . $url);
     }
     return $result;
 }
