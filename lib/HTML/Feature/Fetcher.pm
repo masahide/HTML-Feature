@@ -20,7 +20,7 @@ sub _setup {
     my $fetcher = LWP::UserAgent->new;
     my $config  = $c->config;
     if ( $config->{user_agent} ) {
-        $fetcher->user_agent( $config->{user_agent} );
+        $fetcher->agent( $config->{user_agent} );
     }
     if ( $config->{http_proxy} ) {
         $fetcher->proxy( ['http'], $config->{http_proxy} );
