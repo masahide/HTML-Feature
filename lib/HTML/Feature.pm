@@ -48,7 +48,7 @@ sub _setup {
     my $self = shift;
     $self->front_parser( HTML::Feature::FrontParser->new( context => $self ) );
     $self->engine( HTML::Feature::Engine->new( context => $self ) );
-    if ( !$self->{not_encode} ) {
+    if ( !$self->config->{not_encode} ) {
         $self->{enc_type} ||= "utf8";
     }
 }
