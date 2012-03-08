@@ -16,6 +16,7 @@ sub run {
     my $html_ref = shift;
     my $url      = shift;
     my $result   = shift;
+    my $c        = $self->context;
     my $tree     = HTML::TreeBuilder::XPath->new;
     $tree->no_space_compacting(1);
     $tree->ignore_ignorable_whitespace(0);
@@ -26,10 +27,17 @@ sub run {
     if ($site_info) {
         my $xpath = $site_info->{data}->{xpath};
         my $text;
+        my $h = HTML::Element->new('div');
         for my $node ( $tree->findnodes($xpath) ) {
             $text .= $node->as_text;
+            if ( $c->config->{element_flag} ) {
+              $h->push_content($node);
+            }
         }
         $result->text($text);
+        if ( $c->config->{element_flag} ) {
+           $result->element($h);
+        }
         if ( !$result->title ) {
             if ( my $title = $tree->look_down( _tag => "title" ) ) {
                 $result->title( $title->as_text );

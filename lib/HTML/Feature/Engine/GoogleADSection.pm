@@ -4,11 +4,13 @@ use warnings;
 use HTML::TreeBuilder::LibXML;
 use base qw(HTML::Feature::Base);
 
+
 sub run {
     my $self     = shift;
     my $html_ref = shift;
     my $url      = shift;
     my $result   = shift;
+    my $c        = $self->context;
 
     my $tree = HTML::TreeBuilder::LibXML->new;
     $tree->parse($$html_ref);
@@ -38,6 +40,9 @@ sub run {
         $tree->eof;
         my $text = $tree->as_text;
         $result->text($text);
+        if ( $c->config->{element_flag} ) {
+           $result->element($tree);
+        }
         $result->{matched_engine} = 'GoogleADSection';
     }
     $tree->delete;

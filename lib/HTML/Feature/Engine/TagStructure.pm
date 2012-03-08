@@ -6,6 +6,7 @@ use HTML::TreeBuilder::LibXML;
 use HTML::Feature::Result;
 use base qw(HTML::Feature::Base);
 
+
 sub run {
     my $self     = shift;
     my $html_ref = shift;
@@ -93,7 +94,7 @@ sub run {
     my %ratio = statshash @ratio;
     my %depth = statshash @depth;
     my %order = statshash @order;
-    $tree->delete() unless $c->{element_flag};    # avoid memory leak
+    $tree->delete() unless $c->config->{element_flag};    # avoid memory leak
     my @sorted = sort { $data->[$b]->{score} <=> $data->[$a]->{score} }
       map {
         my $ratio_std =
@@ -111,7 +112,7 @@ sub run {
     $data->[ $sorted[0] ]->{text}
       and $data->[ $sorted[0] ]->{text} =~ s/ $//s;
     $result->text( $data->[ $sorted[0] ]->{text} );
-    if ( $c->{element_flag} ) {
+    if ( $c->config->{element_flag} ) {
         $result->root($tree);
         $result->element( $data->[ $sorted[0] ]->{element} );
     }
